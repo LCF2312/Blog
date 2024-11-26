@@ -3,90 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Blog Assignment - Gemini API</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Building and Deploying the Gemini API</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .code-block {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Technical Blog Assignment</h1>
-        <p>Explore the process of writing an engaging blog post about the Gemini API and CI/CD pipeline.</p>
-    </header>
+    <div class="container">
+        <header class="text-center my-4">
+            <h1>Building and Deploying the Gemini API</h1>
+            <p>A walkthrough of the Gemini API project, testing process, and CI/CD pipeline.</p>
+        </header>
 
-    <main>
-        <section id="objective">
-            <h2>Objective</h2>
-            <p>This assignment aims to enhance your ability to reflect on your work, communicate technical details effectively, and build a portfolio-worthy blog post. You will explain the key aspects of your Gemini API project, including its setup, testing, deployment, and CI/CD pipeline, in a way that resonates with a broad audience.</p>
+        <section id="introduction" class="my-5">
+            <h2>Introduction</h2>
+            <p>
+                The Gemini API is a robust solution for handling advanced prompts and generating custom content. This blog covers how the API was built, tested, and deployed using a CI/CD pipeline.
+            </p>
+            <p>
+                Continuous Integration and Continuous Deployment (CI/CD) play a critical role in automating testing and deployment, ensuring a faster and more reliable software development process.
+            </p>
         </section>
 
-        <section id="instructions">
-            <h2>Instructions</h2>
-            <ol>
-                <li>
-                    <h3>Choose a Platform</h3>
-                    <p>Select a free platform to publish your blog post. Some recommendations include:</p>
-                    <ul>
-                        <li><a href="https://dev.to" target="_blank">Dev.to</a></li>
-                        <li><a href="https://medium.com" target="_blank">Medium</a></li>
-                        <li><a href="https://hashnode.com" target="_blank">Hashnode</a></li>
-                        <li><a href="https://pages.github.com" target="_blank">GitHub Pages</a></li>
-                        <li><a href="https://linkedin.com" target="_blank">LinkedIn Articles</a></li>
-                    </ul>
-                    <p>Alternatively, submit your content as a Google Doc or Word document.</p>
-                </li>
-                <li>
-                    <h3>Title Your Blog Post</h3>
-                    <p>Craft a compelling title that clearly describes the blog's topic. Example titles:</p>
-                    <ul>
-                        <li>"Building and Testing a Custom Gemini API with CI/CD"</li>
-                        <li>"How I Automated Deployment for a Flask API with GitHub Actions"</li>
-                        <li>"Exploring CI/CD and API Testing with the Gemini API"</li>
-                    </ul>
-                </li>
-                <li>
-                    <h3>Organize Your Blog Post</h3>
-                    <p>Follow this structure for your blog:</p>
-                    <ul>
-                        <li><strong>Introduction:</strong> Discuss the purpose and features of the Gemini API and introduce the CI/CD pipeline's role in development.</li>
-                        <li><strong>Setting Up the API:</strong> Explain the API’s functionality, handling of prompts, and custom instructions. Include key code snippets.</li>
-                        <li><strong>Testing the API:</strong> Outline your testing strategy, including unit and integration tests, and provide example test cases with results.</li>
-                        <li><strong>Setting Up CI/CD with GitHub Actions:</strong> Describe how you configured the pipeline, from building Docker images to deployment.</li>
-                        <li><strong>Challenges and Solutions:</strong> Reflect on difficulties faced and the approaches used to resolve them.</li>
-                        <li><strong>Conclusion:</strong> Summarize your learning and suggest potential improvements for the project.</li>
-                    </ul>
-                </li>
-                <li>
-                    <h3>Formatting Tips</h3>
-                    <ul>
-                        <li>Use headings to structure your content clearly.</li>
-                        <li>Include relevant code snippets and diagrams to support your explanations.</li>
-                        <li>Add visuals like pipeline screenshots or CI/CD flow diagrams for better engagement.</li>
-                    </ul>
-                </li>
-                <li>
-                    <h3>Word Count</h3>
-                    <p>Aim for a word count between 800 and 1200. Be concise but thorough in your explanations.</p>
-                </li>
-                <li>
-                    <h3>Submission</h3>
-                    <p>If publishing online, share the blog link. For document submissions, upload your file to the provided portal.</p>
-                </li>
-            </ol>
+        <section id="setup-api" class="my-5">
+            <h2>Setting Up the Gemini API</h2>
+            <p>The Gemini API processes user prompts dynamically and includes custom instructions to tailor responses. Below is an example of the key implementation:</p>
+            <div class="code-block">
+                <pre>
+@app.route('/generate', methods=['POST'])
+def generate_content():
+    data = request.json
+    prompt = data.get("prompt")
+    custom_instruction = data.get("instruction", "")
+    
+    response = f"{custom_instruction} {prompt}".strip()
+    
+    return jsonify({"response": response})
+                </pre>
+            </div>
         </section>
 
-        <section id="grading-criteria">
-            <h2>Grading Criteria</h2>
-            <p>Your blog post will be evaluated based on the following criteria:</p>
+        <section id="testing" class="my-5">
+            <h2>Testing the API</h2>
+            <p>Unit tests and integration tests were created to ensure API functionality:</p>
+            <h3>Example Unit Test</h3>
+            <div class="code-block">
+                <pre>
+def test_generate_content():
+    payload = {"prompt": "Hello, World!", "instruction": "Say:"}
+    response = self.client.post('/generate', json=payload)
+    assert response.json['response'] == "Say: Hello, World!"
+                </pre>
+            </div>
+        </section>
+
+        <section id="ci-cd" class="my-5">
+            <h2>Setting Up CI/CD with GitHub Actions</h2>
+            <p>The CI/CD pipeline automates building, testing, and deploying the Gemini API. Below is the configuration file:</p>
+            <div class="code-block">
+                <pre>
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run Tests
+        run: python -m unittest discover tests
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Deploying to production..."
+                </pre>
+            </div>
+        </section>
+
+        <section id="challenges" class="my-5">
+            <h2>Challenges and Solutions</h2>
+            <p>Some challenges faced during the project:</p>
             <ul>
-                <li><strong>Clarity and Structure:</strong> Well-organized content with clear headings and easy-to-follow explanations. (30%)</li>
-                <li><strong>Technical Accuracy:</strong> Correct representation of the Gemini API, testing, and CI/CD pipeline. (30%)</li>
-                <li><strong>Use of Examples:</strong> Relevant code snippets, diagrams, or visuals to enhance understanding. (20%)</li>
-                <li><strong>Reflection and Insights:</strong> Thoughtful discussion of challenges, solutions, and potential improvements. (20%)</li>
+                <li><strong>Debugging Tests:</strong> Fixed environment inconsistencies using mock data.</li>
+                <li><strong>Managing Secrets:</strong> Stored sensitive credentials securely with GitHub Secrets.</li>
             </ul>
         </section>
-    </main>
 
-    <footer>
-        <p>&copy; 2024 Technical Blog Assignment. All rights reserved.</p>
-    </footer>
+        <footer class="text-center my-5">
+            <h3>Conclusion</h3>
+            <p>This project enhanced my understanding of API development, testing, and CI/CD pipelines. Future improvements include adding performance monitoring and security tests.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
